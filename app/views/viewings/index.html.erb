@@ -1,0 +1,78 @@
+<h1 class="h3 mb-4">Viewings</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Client</th>
+      <th>Address</th>
+      <th>Appointment</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @viewing_requests.size == 0 %>
+      <tr>
+        <td colspan="6">No viewing requests to display.</td>
+      </tr>
+    <% else %>
+      <% @viewing_requests.each do |viewing| %>
+        <tr>
+          <td><%= viewing.property.name.truncate(30) %></td>
+          <td><%= viewing.account.full_name %></td>
+          <td><%= viewing.property.address.truncate(30) %></td>
+          <td><%= viewing.date.strftime("%H:%M on %d/%m/%Y") %></td>
+          <td><%= viewing.status.capitalize %></td>
+          <td>
+            <% if viewing.status != "approved" %>
+              <%= form_tag approve_viewing_path, method: :post, class: "float-left mr-2" do %>
+                <%= hidden_field_tag :id, viewing.id %>
+                <%= submit_tag "Approve", class: "btn btn-success" %>
+              <% end %>
+            <% end %>
+
+            <% if viewing.status != "declined" %>
+              <%= form_tag decline_viewing_path, method: :post, class: "float-left mr-2" do %>
+                <%= hidden_field_tag :id, viewing.id %>
+                <%= submit_tag "Decline", class: "btn btn-info" %>
+              <% end %>
+            <% end %>
+
+            <%= link_to 'Delete', viewing, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<p class="h4 mt-5 mb-3">Viewing Requests Sent</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Address</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @viewing_requests_sent.size == 0 %>
+      <tr>
+        <td colspan="4">No viewing requests to display.</td>
+      </tr>
+    <% else %>
+      <% @viewing_requests_sent.each do |viewing| %>
+        <tr>
+          <td><%= viewing.property.name %></td>
+          <td><%= viewing.property.address.truncate(50) %></td>
+          <td><%= viewing.date.strftime("%d/%m/%Y") %></td>
+          <td><%= viewing.status.capitalize %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

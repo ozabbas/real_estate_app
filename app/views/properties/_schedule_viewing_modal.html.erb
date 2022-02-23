@@ -1,0 +1,35 @@
+<div class="modal fade" id="schedule-viewing-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Schedule a Viewing</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% unless account_signed_in? %>
+          <p>You must be signed in to schedule a viewing for this property.</p>
+        <% else %>
+          <%= form_for @schedule_viewing, id: "schedule-viewing" do |f| %>
+            <%= f.hidden_field :property_id, value: property.id %>
+
+            <div class="form-group">
+              <label for="message-last-name" class="col-form-label">Viewing date:</label>
+              <%= f.datetime_field :date, class: "form-control", id: "viewing-date" %>
+            </div>
+
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Message:</label>
+              <%= f.text_area :notes, class: "form-control", id: "message-text" %>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= button_tag "Send message", class: "btn btn-success", id: "send-message-to-agent" if account_signed_in? %>
+      </div>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

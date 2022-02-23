@@ -1,0 +1,89 @@
+<div class="property-main-photo" style="background-image:url('<%= property_photo_url @property %>')">
+  <div class="photo-overlay">
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-lg-5">
+          <p class="h4 mb-0"><%= @property.for_sale? ? "For Sale" : "For Rent" %></p>
+          <p class="mb-2"><%= @property.address %></p>
+          <p class="h2 mb-3">
+            <% if @property.for_sale? %>
+              <%= @property.price > 0 ? number_to_currency(@property.price, precision: 0) : "Offers Accepted" %>
+            <% else %>
+              <%= @property.price > 0 ? number_to_currency(@property.price, precision: 0) + "/month" : "Open for enquiries" %>
+            <% end %>
+          </p>
+        </div>
+        <div class="col-lg-7 text-center">
+          <div class="row mt-sm-3 bg-light p-3">
+            <div class="col-4">
+              <i class="fas fa-bed text-muted m-0"></i><br />
+              <small><%= @property.rooms %> Bedrooms</small>
+            </div>
+            <div class="col-4">
+              <i class="fas fa-bath text-muted m-0"></i><br />
+              <small><%= @property.bathrooms %> Bathrooms</small>
+            </div>
+            <div class="col-4">
+              <i class="fas fa-car text-muted m-0"></i><br />
+              <small><%= @property.parking_spaces %> Parking</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row border-top border-bottom mt-5 mb-4 pt-4 pb-4">
+        <div class="col-6">
+          <% if @property.for_sale? %>
+            <strong><%= link_to "Est. Monthly Repayments of #{ mortage_monthly_repayment @property } *", "#", class: "text-success" %></strong>
+          <% else %>
+            <strong>Available from <%= @property.available_date.strftime("%a") %>, <%= @property.available_date.day.ordinalize %> <%= @property.available_date.strftime("%B") %></strong>
+          <% end %>
+        </div>
+        <div class="col-6 text-right">
+          <strong><%= link_to "Can I afford this property?", "#", class: "text-success" %></strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <%= button_tag "Schedule a viewing", class: "float-right btn btn-outline-info", data: { toggle: "modal", target: "#schedule-viewing-modal" } %>
+
+          <p class="h3"><%= @property.name %></p>
+          <p class="h5">Property Description</p>
+
+          <div id="prop-details" class="">
+            <%= simple_format @property.details %>
+          </div>
+
+          <button class="btn btn-outline-info mt-3" id="toggleDetails">Show more</button>
+
+          <% if @property.for_sale %>
+            <p class="mt-5">* This rate is based on a 30 year mortgage, after paying an initial 10% down payment. Shorter term mortages would require a higher monthly repayment.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <%= render "properties/agent_details" %>
+
+      <iframe class="ml-lg-4 mt-3" width="320" height="240" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBwOWZ_C1sw6lYJhxYk_LJJCI2uM9GW8IA&q=<%= @property.address.to_param %>" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<section class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p class="h3 mb-3">Other properties by this agent</p>
+      </div>
+      <%= render "properties/list", properties: @agent_properties %>
+    </div>
+  </div>
+</section>
+
+<%= render "properties/send_email_modal", agent: @agent %>
+<%= render "properties/schedule_viewing_modal", property: @property %>

@@ -1,0 +1,18 @@
+<main role="main" class="main-banner" id="blog-banner">
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Latest Properties</h1>
+      <p>Stay up to date with the latest property news at Property Finder!</p>
+    </div>
+  </div>
+</main>
+
+<div class="container">
+  <div class="row">
+  <% if @properties.empty? %>
+    <p>No properties to display.</p>
+  <% else %>
+    <%= render "properties/list", properties: @properties %>
+  <% end %>
+  </div>
+</div>

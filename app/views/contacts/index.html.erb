@@ -1,0 +1,32 @@
+<h1 class="h3 mb-4">Contacts</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th width="25%">Name</th>
+      <th width="25%">Email</th>
+      <th>Date</th>
+      <th class="text-right">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @contacts.size == 0 %>
+      <tr>
+        <td colspan="4">No contacts to display.</td>
+      </tr>
+    <% else %>
+      <% @contacts.each do |contact| %>
+        <tr>
+          <td><%= contact.full_name %></td>
+          <td><%= contact.email %></td>
+          <td><%= contact.created_at.strftime("%d/%m/%Y") %></td>
+          <td class="text-right">
+            <%= link_to "View Profile", profile_path(contact.id), class: "btn btn-success" %>
+            <%= link_to 'Delete', contact_path(contact), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

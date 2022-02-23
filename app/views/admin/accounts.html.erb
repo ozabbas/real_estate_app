@@ -1,0 +1,22 @@
+<h1 class="h3 mb-4">Accounts</h1>
+
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Created</th>
+    <th>Properties</th>
+    <th>Profile</th>
+  </thead>
+  <tbody>
+    <% @accounts.each do |account| %>
+    <tr>
+      <td><%= account.full_name %></td>
+      <td><%= account.email %></td>
+      <td><%= account.created_at.strftime("%d/%m/%Y") %></td>
+      <td><%= account.properties.size %></td>
+      <td><%= link_to "View profile", profile_path(account.id) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
